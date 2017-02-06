@@ -34,14 +34,14 @@ Futásidőben generált weblapról automatikusan frissülő szöveggyőjteményt
 2. A program eszerint működik.
 
 #Kinda docu:
-```
+```python
 def get_user_action():
     """This function captures the click of the user on the web page and stores it in a file."""
 ```
 ```
 def change_user_action():
-    """This function changes the file by a new interaction, or manual rewriting. Can call
-    get_user_action()"""
+    """This function changes the file by a new interaction, or manual rewriting.
+    Can call get_user_action()"""
 ```
 ```
 def difference(old_page_source: list, new_page_source: list) -> str:
@@ -49,15 +49,17 @@ def difference(old_page_source: list, new_page_source: list) -> str:
 ```
 ```
 def get_refreshment(browser: splinter.Browser) -> list:
-    """This function issues a new HTTP request by clicking on the "refresh" button saved by the get_refresh_button()
-    function.
+    """This function issues a new HTTP request by clicking on the
+    "refresh" button saved by the get_refresh_button() function.
 ```
 ```
 def get_refresh_button():
-    """This function saves the DOM elements of the page responsible for getting the new data, marked manually by the
+    """This function saves the DOM elements of the page responsible
+    for getting the new data, marked manually by the
     user. Calls get_user_action() or gets it from text input"""
 ```
 ```
 def run_extraction(urladdr: str):
-    """The main function, containing the initial GET request, the main loop and the output"""
+    """The main function, containing the initial GET request, the
+    main loop and the output"""
 ```
