@@ -8,10 +8,10 @@ Jelen dolgozat célja, hogy röviden bemutassa a dinamikusan generált weblapok 
 #Specifikáció:
 Futásidőben generált weblapról automatikusan frissülő szöveggyőjteményt összeállító program.
 ##A futás menete:
-1) Először text inputból vagy user interactionból megszerzi a DOM-elem nevét, amire kattintva a frissítést végzi.
-2) Ezután betölti a weblapot, és kinyeri a betöltött oldal tartalmát.
-3) Az eltárolt DOM elemre kattintva (ha az nem létezik akkor folyamatosan monitorozva és amint létrejött rákattintva) elindítja az új lekérést. Ez a MAIN LOOP
-4) Az eredeti lekérés és az új lekérések tartalmát egyenként szűri, differenciálja és a differenciát elmenti egy fájlba.
+1. Először text inputból vagy user interactionból megszerzi a DOM-elem nevét, amire kattintva a frissítést végzi.
+2. Ezután betölti a weblapot, és kinyeri a betöltött oldal tartalmát.
+3. Az eltárolt DOM elemre kattintva (ha az nem létezik akkor folyamatosan monitorozva és amint létrejött rákattintva) elindítja az új lekérést. Ez a MAIN LOOP
+4. Az eredeti lekérés és az új lekérések tartalmát egyenként szűri, differenciálja és a differenciát elmenti egy fájlba.
 
 #Részfeladatok:
 * Elmenteni a felhasználó klikkelését, ami megmutatja, melyik link lenyomásával lehet az új adatot behozni.
@@ -21,17 +21,17 @@ Futásidőben generált weblapról automatikusan frissülő szöveggyőjteményt
 * Gépi tanuló API, aminek segítségével az algoritmus felhasználói beavatkozás nélkül tanulhatja a weblap működését.
 
 ##Példa Usecase:
-1) Gép valami gépitanulással eldönti, hogy mit kell kattintani és mit nem.
-2) Ember hasonlóan...
-3) Kettőt összehasonlítva mérjük a gépi tanulás "erejét" az adott feladatra...
+1. Gép valami gépitanulással eldönti, hogy mit kell kattintani és mit nem.
+2. Ember hasonlóan...
+3. Kettőt összehasonlítva mérjük a gépi tanulás "erejét" az adott feladatra...
 
 ##Példa Usecase2:
-1) Gép eldönti, hogy hova kell kattintani...
-2) Ember átnézi és neki nem tetszik, ekkor belejavít...
+1. Gép eldönti, hogy hova kell kattintani...
+2. Ember átnézi és neki nem tetszik, ekkor belejavít...
 
 ##Példa Usecase3:
-1) Ember valami minta alapján generáltat valami utasítás listát, hogy ide kell kattintani. (Kvázi Első usecase 2.-pont csak itt az ember is automatizáltan csinálná a dolgokat)
-2) A program eszerint működik.
+1. Ember valami minta alapján generáltat valami utasítás listát, hogy ide kell kattintani. (Kvázi Első usecase 2.-pont csak itt az ember is automatizáltan csinálná a dolgokat)
+2. A program eszerint működik.
 
 #Kinda docu:
 def get_user_action():
