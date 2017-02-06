@@ -4,6 +4,14 @@ import justext
 import difflib
 
 
+def get_user_action():
+    """This function captures the click of the user on the web page and stores it in a file."""
+
+
+def change_user_action():
+    """This function changes the file by a new interaction, or manual rewriting."""
+
+
 def difference(old_page_source: list, new_page_source: list) -> str:
     """This function differentiates the two strings given as parameters.
     :type old_page_source: list
@@ -39,6 +47,7 @@ def get_refresh_button():
 
 
 def run_extraction(urladdr: str):
+    """The main function, containing the initial GET request, the main loop and the output"""
     executable_path = {'executable_path': 'lib/chromedriver'}
 
     # chrome_options = selenium.webdriver.ChromeOptions()
