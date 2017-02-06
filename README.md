@@ -14,11 +14,13 @@ Futásidőben generált weblapról automatikusan frissülő szöveggyőjteményt
 4. Az eredeti lekérés és az új lekérések tartalmát egyenként szűri, differenciálja és a differenciát elmenti egy fájlba.
 
 #Részfeladatok:
-* Elmenteni a felhasználó klikkelését, ami megmutatja, melyik link lenyomásával lehet az új adatot behozni.
-* Képes legyen ezt az inputot megváltoztatni.
-* Az inputot (a DOM-elemet, ami aktiválja az adatlekérést) szerkeszthető formában tárolni.
-* Az outputot olvasható formában tárolni.
-* Gépi tanuló API, aminek segítségével az algoritmus felhasználói beavatkozás nélkül tanulhatja a weblap működését.
+[] Elmenteni a felhasználó klikkelését, ami megmutatja, melyik link lenyomásával lehet az új adatot behozni.
+[] Képes legyen ezt az inputot megváltoztatni.
+[] Az inputot (a DOM-elemet, ami aktiválja az adatlekérést) szerkeszthető formában tárolni.
+[] Az outputot olvasható formában tárolni.
+[] Differencciálja a betöltött HTML-adatokat és csak a különbséget menti el, így csökkentve a redundnciát.
+[] Monitorozza az oldalt, ajtomatikus változásokat keresve. Ha az addig láthatatlan, user által adott GET link megjelenik, rákattint (így nem kell az egész oldalt újratölteni).
+[] Gépi tanuló API, aminek segítségével az algoritmus felhasználói beavatkozás nélkül tanulhatja a weblap működését.
 
 ##Példa Usecase:
 1. Gép valami gépitanulással eldönti, hogy mit kell kattintani és mit nem.
