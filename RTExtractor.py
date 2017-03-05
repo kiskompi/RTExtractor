@@ -1,22 +1,27 @@
-
+# -*- coding: utf-8 -*-
+""" TODO PLACEHOLDER module docstring """
 import splinter
 import justext
 import difflib
 
 
 def get_user_action():
-    """This function captures the click of the user on the web page and stores it in a file."""
+    """
+    This function captures the click of the user on the web page and stores it in a file.
+    """
 
 
 def change_user_action():
-    """This function changes the file by a new interaction, or manual rewriting."""
+    """
+    This function changes the file by a new interaction, or manual rewriting.
+    """
 
 
 def difference(old_page_source: list, new_page_source: list) -> str:
-    """This function differentiates the two strings given as parameters.
+    """
+    This function differentiates the two strings given as parameters.
     :type old_page_source: list
     :type new_page_source: list
-
     """
     # TODO
     old_clear = ""
@@ -36,17 +41,21 @@ def difference(old_page_source: list, new_page_source: list) -> str:
 
 
 def refresh(browser: splinter.Browser) -> str:
-    """This function issues a new HTTP request by clicking on the "refresh" button saved by the get_refresh_button()
-    function. 
+    """
+    This function issues a new HTTP request by clicking on the "refresh" button
+    saved by the get_refresh_button() function.
     :rtype: str
-    :type browser: splinter.Browser"""
+    :type browser: splinter.Browser
+    """
     # TODO
     browser.reload()
     return browser.html
 
 
 def run_extraction(urladdr: str):
-    """The main function, containing the initial GET request, the main loop and the output"""
+    """
+    The main function, containing the initial GET request, the main loop and the output
+    """
     executable_path = {'executable_path': 'lib/chromedriver'}
 
     # chrome_options = selenium.webdriver.ChromeOptions()
@@ -64,20 +73,21 @@ def run_extraction(urladdr: str):
             results_str += paragraph.text
         else:
             print("BOILERPLATE:\n", paragraph.text)
-    f = open('results.txt', 'w')
+    file = open('results.txt', 'w')
     results_str += str(browser.html)
-    f.write(results_str)
+    file.write(results_str)
     try:
         while True:
             new_paragraphs = justext.justext(refresh(browser), justext.get_stoplist('English'))
 
-            # ez a rész ideiglenesen justextet használ, ez még változhat - mivel a runtime generated oldalak legtöbbször
+            # ez a rész ideiglenesen justextet használ, ez még változhat - mivel a runtime
+            # generated oldalak legtöbbször
             # single page felépítésűek, ezért nem lehet "oldalanként" tanítani a Goldminert
             diff = difference(paragraphs, new_paragraphs)
 
             results_str += str(diff)
             # if diff != "" or diff is not None:
-            f.write(diff)
+            file.write(diff)
 
     except KeyboardInterrupt:
         pass

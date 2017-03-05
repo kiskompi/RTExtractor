@@ -1,0 +1,49 @@
+Modulok:
+A program a Selenium WebIDE szkriptfájljaiból nyeri az inputot. Ezt lekezelve hajtja végre az utasításokat, absztrahálva, hogy ne csak a konkrét elemeket, hanem az ugyanabba az osztályba kerülő elemeket is kezelni tudja. Ehhez kell egy klasszifikátor.
+
+A klasszifikátor működjön úgy, hogy megnézi a klikkelt elemek classait, majd a hasonlóan viselkedőkét (pl amelyik nem töltött be új URL-t) egy csoportba gyűjti a viselkedésének megfelelően. Emellett mindenképp megpróbál lemenni az oldal aljára, akkor is, ha nincs ilyen interakció. Az alulra görgetést viszont nem csinálja a végtelenségig, mert elfogy a memória.
+
+Működés:
+1. A felhasználói interakció alapján megtanult csoportosítással a bejárt oldal SectionReveaLButton osztályú linkjeit vektorokba rakja, majd sorban meghívja őket.
+2. Amikor a linkek elfogytak, az oldal aljára görget. Ha nem töltődik be új tartalom: rámegy egy TraditionalHyperlinkButton típusú linkre.
+
+Tehát:
+1. Selenium WebIDE - ebbe jön a felhasználói input, elmenti a szkriptfájlját.
+2. Klasszifikátor - a szkriptfájlban lévő DOM elemeket absztrahálja annyira, hogy a weboldal bármelyik hasonló típusú elemére felismerje a böngésző.
+3. Végrehajtó - ami a szkriptet a Python Selenium API-val végrehajtatja, vagy Selenium formátumba elmenti (amelyik könnyebb).
+
+Lehetséges absztrakciók az interkcióra képes dolgokra:
+SectionRevealButton
+    - pl. fb more comment, twitter new posts, Index Mindeközben új hír gombok, ez új szekciót nyit ki ugyanezen az oldalon
+ScrollDownLoader
+    - ha lefele görget, akkor új tartalom jön be
+LanguageSelectionButton:
+    - ha a gomb megnyomásával a tartalom nem, de a tartalom nyelve megváltozik. pl. euronews
+TraditionalHyperlinkButton:
+    - sima link
+PopUpSection
+    - olyan, felhasználói interakciót igénylő oldalrész, ami blokkolja az oldal tartalmainak elérését. Kódszinten nem probléma, de a felhasználói interakció ami ezt kiiktatja értéktelen a crawlernek, ezért kiszűrendő. (interakció-boilerplate). lehet, hogy csak meg kéne mondani a felhasználóknak, hogy amikor ilyenre kattintsanak, addig állítsák le a felvételt, mert ronthatja a pontosságot.
+
+Tehát: ismerje meg azokat a linkeket, melyek nem más URL-re irányítanak, hanem ezen az oldalon jelenítenek meg további tartalmakat. 
+Ismerje fel azokat a lehetőségeket, melykor az oldal aljára görgetve új adatok töltődnek be. A felhasználói interakciókor a felugró div-ek még bezavarhatnak, de az automatizált crawling futásakor ez már nem szabad.
+
+Egy XML-be mentse ki az tanulás eredményét, így:
+<SectionRevealButton>
+    <webpage url="www.twitter.com">
+        <group type = "SectionRevealButton">
+            <class>CLASSNAME1</class>
+            <class>CLASSNAME2</class> (azok a classnevek, amik indikálják a tanulás alapján, hogy ebbe a csoportba tartozik)
+            <class>CLASSNAME3</class>
+        </group>
+        <group type = "LanguageSelectionButton">
+            <class>CLASSNAME2</class> (azok a classnevek, amik indikálják a tanulás alapján, hogy ebbe a csoportba tartozik)
+        </group>
+        <group type = "ScrollDownLoader"></group> EZ ÜRES, A LÉTEZÉSE MÁR AZT JELENTI, HOGY HA LEGÖRGETEK, JÖN ÚJ ADAT
+    </webpage>
+    <webpage url="www.facebook.com">
+    </webpage>
+    <webpage url="www.euronews.com">
+    </webpage>
+    <webpage url="www.index.hu">
+    </webpage>
+</SectionRevealButton>

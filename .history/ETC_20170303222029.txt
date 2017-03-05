@@ -1,0 +1,13 @@
+Modulok:
+A program a Selenium WebIDE szkriptfájljaiból nyeri az inputot. Ezt lekezelve hajtja végre az utasításokat, absztrahálva, 
+hogy ne csak a konkrét elemeket, hanem az ugyanabba az osztályba kerülő elemeket is kezelni tudja.
+
+Lehetséges absztrakciók az interkcióra képes dolgokra:
+SectionRevealButton
+    - pl. fb more comment, twitter new posts, Index Mindeközben új hír gombok, ez új szekciót nyit ki ugyanezen az oldalon
+ScrollDownLoader
+    - ha lefele görget, akkor új tartalom jön be
+
+
+Tehát: ismerje meg azokat a linkeket, melyek nem más URL-re irányítanak, hanem ezen az oldalon jelenítenek meg további tartalmakat. 
+Ismerje fel azokat a lehetőségeket, melykor az oldal aljára görgetve új adatok töltődnek be.
