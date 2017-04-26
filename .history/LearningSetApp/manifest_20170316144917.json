@@ -1,0 +1,33 @@
+{
+  // Required
+  "manifest_version": 2,
+  "name": "LearningSetApp",
+  "version": "0.1",
+
+  // Recommended
+  "description": "Helps the user to create leraning set for RTCrawler.",
+  // "icons": {...},
+
+  // Pick one (or none)
+  // TODO "page_action": {...},
+
+  // Optional
+  "author": "Komporday András",
+  "permissions": [
+    "activeTab"
+  ],
+  "background": {
+    "scripts": ["jquery-3.1.1.min.js","background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+  "run_at": {
+    "window.onload"
+    }
+ // "content_scripts": [{
+ //   "matches": ["*://*/*"],
+ //   "js":["clsmanager.js"]
+ // }]
+}

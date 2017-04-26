@@ -1,0 +1,24 @@
+{
+
+  "manifest_version": 1,
+  "name": "CLS Manager",
+  "version": "1.0",
+
+  "description": "Saves the DOM elements of the page into the learning set of RTCrawler based on user input.",
+
+  "backgound": [
+    {
+      "matches": ["*://*/"],
+      "js": ["clsmanager.js"]
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "contextMenus"
+  ],
+  "applications": {
+    "gecko": {
+       "id": "valami@valami.hu"
+     }
+  }
+}

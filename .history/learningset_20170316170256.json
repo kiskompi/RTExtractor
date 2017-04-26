@@ -1,0 +1,7 @@
+{
+    "url": "twitter.com",
+    "tag": "div",
+    "code": "<div class=\"new-tweets-bar js-new-tweets-bar" data-item-count="1">
+      1 new result
+  </div>"
+}
