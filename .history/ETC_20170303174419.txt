@@ -1,2 +1,0 @@
-Modulok:
-A program a Selenium WebIDE szkriptfájljaiból nyeri az inputot. Ezt lekezelve hajtja végre az utasításokat, absztrahálva.
