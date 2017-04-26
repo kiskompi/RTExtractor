@@ -109,6 +109,36 @@ Egy XML-be vagy YAML-ba mentse ki az tanulás eredményét, hogy újrafelhaszná
     </webpage>
 </SectionRevealButton>
 ```
+## Új link tíus hozzáadása
+
+Erre csak a forráskód módosításával van lehetőség. A következő részekre az element.py megfelelő kódsoraihoz új sorok beszúrásával lehet új típust felvenni:
+```python
+10 class CrawlerClass(Enum):
+11    """
+12    This class is an enumeration representing the classes which are the output
+13    of the decision tree.
+14    """
+15    REVEAL = 1
+16    INNER = 2
+17    OUTER = 3
+18    UNDET = 0
+19    # Ide az új típust beszúrni 
+```
+```python
+34    try:
+35	if par == "SectionReveal":
+36            return cls.REVEAL
+37        elif par == "OuterPageLink":
+38            return cls.OUTER
+39        elif par == "InnerPageLink":
+40            return cls.INNER
+41        elif par == "UNDET" or par == "":
+42            return cls.UNDET
+43        else:
+44            raise AttributeError("Bad value for CrawlerClass!")
+45        # Ide az új típus és az annak megfelelő str ellenőrzésének beszúrása
+```
+
 Amit meg kell nézni: van-e bit.ly vagy goo.gl visszafejtő vagy valami hasonló.
 ## Python libraryk:
     - scikit-learn
