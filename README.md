@@ -1,4 +1,5 @@
 #Bevezetés:
+
 Az internet terjedésével egyre fontosabbá válik az a törekvés, hogy az ott fellelhető információ ne csak a felhasználók, hanem különböző szoftverek által is feldolgozható legyen. Ebből a célból jött létre a 2000-es évek elején a szemantikus web koncepciója, majd emiatt születtek meg a különböző tartalomkinyerési technológiák. A különböző célokra specializált tartalomkinyerő programok célja az, hogy a feladatuk szempontjából releváns információkat a lényegtelen információktól (ún. boilerplate) megtisztítva bányásszák ki a weboldalakból. Ilyen feladat lehet pl. a nyelvészeti célú felhasználás, illetve az információ kis méretű eszközökön jobban megjeleníthetővé tétele és a látássérültek számára készült képernyőolvasó programok által könnyebben feldolgozható formátumba történő alakítása.
 
 A modern tartalomkinyerő rendszerek egyik legnagyobb kihívása, hogy képesek legyenek kibányászni az internet egyre nagyobb hányadát elfoglaló dinamikusan, futási időben generált weblapok releváns tartalmait. Ebbőn a szempontból a web rohamtempóban fejlődve maga mögött hagyta a webbányászatot, mivel annak csúcstechnológiát jelentő épviselői sem képesek ezen adatok teljes mértékű feldolgozására.
@@ -7,6 +8,7 @@ Jelen dolgozat célja, hogy röviden bemutassa a dinamikusan generált weblapok 
 
 
 #Részfeladatok:
+
 - [ ] Elmenteni a felhasználó klikkelését, ami megmutatja, melyik link lenyomásával lehet az új adatot behozni. - Selenium WebIDE
 - [ ] Képes legyen ezt az inputot megváltoztatni. - Selenium WebIDE szkriptfájljainak kezelése
 - [ ] Az inputot (a DOM-elemet, ami aktiválja az adatlekérést) szerkeszthető formában tárolni. - Selenium WebIDE szkriptfájlja
