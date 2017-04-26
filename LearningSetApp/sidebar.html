@@ -1,0 +1,23 @@
+<!doctype html>
+<html style="height: 100%">
+<head>
+</head>
+<body style="overflow-y: hidden; height: 100%">
+  <div style="margin-bottom: 10px">
+    <input id="input" placeholder="New category name"></input>
+    <button id="add">Add category</button>
+    <select id="category" tabindex="1">
+    </select>
+    <button id="save" tabindex="3">Save!</button>
+    <button id="reset" tabindex="5" style="float: right">Reset categories!</button>
+    <button id="export" tabindex="4" style="float: right">Saved items</button>
+
+  </div>
+
+<div style="height: 100%">
+  <textarea tabindex="2" id="code" placeholder="Code to save..." style="height: 80%; width: 100%; max-width:100%;max-height:90%; margin-bottom: 10px"></textarea>
+</div>
+<script src="FileSaver.js"></script>
+<script src="sidebar.js"></script>
+</body>
+</html>

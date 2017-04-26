@@ -1,0 +1,6 @@
+{
+  "name": "Chrome element sorter",
+  "version": "1.0",
+  "devtools_page": "devtools.html",
+  "manifest_version": 2
+}
