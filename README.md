@@ -28,6 +28,10 @@ A klasszifikátor működjön úgy, hogy megnézi a klikkelt elemek classait, ma
 1. Tanulóhalmaz létrehozása:
     1. Felhasználói interakcióval (Selenium WebIDE) használatával csoportosítja a linkeket. Ebből megtanulja az osztályozás szabályait, hogy aztán interakció nélkül tudja kezelni a többi letöltött oldalt.
         * tényleg kell a Selenium a tanuláshoz (vagy csak a végrehajtáshoz)?
+        * elég egyelőre az Inspect tool a böngészőben, és kézzel megcsinálni a fájlt?
+        * Inspect tool-> copy element -> bemásolni egy saját programba, ami összeállítja a fájlt 2 adat alapján:
+            1. element forráskód
+            2. user által megadott osztály
     2. lehet hardcoded néhány feature (pl. URL domain része), azok alapján továbbtanulni
 2. A felhasználói interakció alapján megtanult csoportosítással a bejárt oldal linkjeit osztályokba rendezi: 
     * SectionRevealButton, 
@@ -38,6 +42,8 @@ A klasszifikátor működjön úgy, hogy megnézi a klikkelt elemek classait, ma
     * Ha nem töltődik be új tartalom: 3-as ponthoz.
     * Ha betöltődik, akkor újra vektorba rendezi a inkeket, de csak azokat a SectionReveaLButton típusúakat járja be, amik az előző vektorban nem voltak benne. Ezután vissza a 2-es ponthoz (újra legörget). X (kb. 5) legörgetés után abbahagyja, mert túl nagy lenne a memóriaigény.
 5.  Miután a legörgetést abbahagyhja, rámegy egy TraditionalHyperlinkButton típusú linkre, ami ugyanerre az URL-osztályra mutat (pl facebookról csak facebookra).
+
+Csak a void linkek feldolgozásához kell seleniumot használni, a többi mehet URL alapján.
 
 # Implementáció folyamata:
 Mindig működő kis modulokat kell létrehozni, azokat egyemnként tesztelni:
@@ -55,7 +61,7 @@ Mindig működő kis modulokat kell létrehozni, azokat egyemnként tesztelni:
 
 
 ## Tehát:
-1. Selenium WebIDE - ebbe jön a felhasználói input, elmenti a szkriptfájlját.
+1. Tanulóhalmaz - ebbe jön a felhasználói input, elmenti a szkriptfájlját.
 2. Klasszifikátor - a szkriptfájlban lévő DOM elemeket absztrahálja annyira, hogy a weboldal bármelyik hasonló típusú elemére felismerje a böngésző.
 3. Végrehajtó - ami a szkriptet a Python Selenium API-val végrehajtatja.
 
