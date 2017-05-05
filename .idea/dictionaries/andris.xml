@@ -2,9 +2,17 @@
   <dictionary name="andris">
     <words>
       <w>attrs</w>
+      <w>clickable</w>
       <w>clssfr</w>
+      <w>dectree</w>
+      <w>extr</w>
       <w>learningset</w>
+      <w>revealer</w>
       <w>tanulóhalmaz</w>
+      <w>testbrowser</w>
+      <w>tren</w>
+      <w>vagy</w>
+      <w>zope</w>
     </words>
   </dictionary>
 </component>

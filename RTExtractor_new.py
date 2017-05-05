@@ -75,7 +75,7 @@ class RTClassifier:
     @classmethod
     def import_learning_set(cls, file):
         """
-        Imports the learning set and converts it to a vector of objects.
+        Imports the learning set and converts it to a vector of objects. 
         :param file : str
             The filename of the file which stores the learning set.
         :returns A vector of CrawlElement type objects
@@ -128,8 +128,8 @@ class RTClassifier:
         for revealer in self._section_reveals:
             # splinter or selenium click on this type of elements
             css_attrs = "." + ".".join((revealer['class'])).replace(" ", ".")
-            i = 0
-            while i < reveal_count:
+
+            for i in range(1, reveal_count):
                 try:
                     elem_ls = browser.find_by_css(css_attrs)
                     if len(elem_ls) <= i:
@@ -146,10 +146,14 @@ class RTClassifier:
                                     self._clicked.append(elem_ls[i])
                                     print("Element clicked")
                                 inv = True
-                    i += 1
                 except StaleElementReferenceException:
                     print("StaleElementReference")
                     continue
+
+            # print(self._section_reveals.pop(0))
+            # for elem in elem_ls:
+            #    elem.click()
+            #    print(elem)
 
     @classmethod
     def scroll_down(cls, browser: Browser, scrollnum: int):
@@ -179,7 +183,7 @@ class RTClassifier:
 
     def crawl(self, browser: Browser):
         """
-        This function clicks on an element of the _inner_links or the _outer_links vector.
+        This function clicks on an element of the _inner_links or the _outer_links vector. 
         If the RTClassifier has the _target set to "CLOSED" it only clicks on elements of
         the _inner_links vector.
         Parameters
@@ -246,7 +250,7 @@ class RTClassifier:
         :param browser_str: the name of the browser used to start the Splinter simulation
         """
         try:
-            if browser_str == "chrome" or browser_str == "firefox" or browser_str == "zope.testbrowser":
+            if browser_str == "chrome" or browser_str == "firefox" or browser_str == "zope.testbrowser": 
                 browser = Browser(browser_str)
             else:
                 raise AttributeError("Browser not supported!")

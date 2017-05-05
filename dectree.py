@@ -23,7 +23,8 @@ class DecTree:
         if ("js-stream-item" in features and "stream-item stream-item" in features
             or "new-tweets-bar" in features and "js-new-tweets-bar" in features
             or 'QuoteTweet-link' in features and 'js-nav' in features
-            or "Icon" in features and "Icon--close" in features and "Icon--large" in features):
+            or "Icon" in features and "Icon--close" in features and "Icon--large" in features
+            or "modal-btn" in features and "modal-close" in features and "js-close" in features):
                 return "REVEAL"
         elif "js-display-url" in features:
             return "OUTER"
