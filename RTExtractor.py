@@ -26,8 +26,12 @@ ugyanerre az URL-osztályra mutat (pl facebookról csak facebookra).
 
 from splinter import Browser
 import random
+from bs4 import BeautifulSoup
+from bs4 import NavigableString
 
 import element
+import dectree
+import json
 
 
 class RTClassifier:
@@ -67,21 +71,18 @@ class RTClassifier:
     def import_learning_set(cls, file):
         """
         Imports the learning set and converts it to a vector of objects. 
-        Parameters
-        ----------
-        file : str
+        :param file : str
             The filename of the file which stores the learning set.
-        Returns
-        -------
-            A vector of Element type objects
+        :returns A vector of CrawlElement type objects
         """
         with open(file) as data_file:
-            data = element.json.load(data_file)
+            data = json.load(data_file)
             # FIXME
-            elem = element.Element.json2element(data)
+            elem = element.CrawlElement.json2element(data)
             elem.print()
 
-    def classify(self, elem: element.Element):
+    @classmethod
+    def classify(cls, html_classes: list):
         """
         In this method the decision tree classifies a single HTML element to one of
         the four crawlerClass values. It also appends the classified element to the
@@ -91,33 +92,40 @@ class RTClassifier:
         * SamePageHyperlink
 
         This is where the decision tree is being used.
-        Parameters
-        ----------
-        elem : Element
+        :param html_classes : CrawlElement
             The element which will be classified by the function.
         """
-        # TODO
-        return NotImplemented
+
+        #   if dectree.DecTree().classify(html_classes) != "MISC":
+        #       print(dectree.DecTree().classify("{} : classes {}".format(html_classes, html_classes)))
+        return dectree.DecTree().classify(html_classes)
 
     def reveal_all(self, browser: Browser):
         """
         Clicks on all of the links in the _section_reveals vector.
         Parameters
         ----------
-        browser : Browser
+        :param browser : Browser
             The Splinter Browser object which controls the browser which
             executes the called actions.
         """
-        for rev in self._section_reveals:
-            # splinter vagy selenium click on this type of elements
-            print(rev)
-            filtered = []
-            for hclass in rev.html_class:
-                # finds the elements which have ALL of the HTML classes listed in element.Element.html_class
-                filtered = browser.find_by_css(hclass)
 
-            for filtered_rev in filtered:
-                filtered_rev.click(filtered_rev)
+        for revealer in self._section_reveals:
+            # splinter or selenium click on this type of elements
+            # FIXME Can't see what it doesn't click -> BIG BIG PROBLEM!
+            css_attrs = "." + ".".join((revealer['class'])).replace(" ", ".")
+            try:
+                elem_ls = browser.find_by_css(css_attrs)
+                for i in range(1, len(elem_ls)):
+                    if elem_ls[i].visible:
+                        elem_ls[i].click()
+            except "DriverException" or "WebDriverException":
+                print("Element not clickable: ", revealer)
+
+            # print(self._section_reveals.pop(0))
+            # for elem in elem_ls:
+            #    elem.click()
+            #    print(elem)
 
     @classmethod
     def scroll_down(cls, browser: Browser):
@@ -150,15 +158,28 @@ class RTClassifier:
         the _inner_links vector.
         Parameters
         ----------
-        browser : Browser
+        :param browser : Browser
             The Splinter Browser object which controls the browser which
             executes the called actions.
         """
+
         if self._target == "CLOSED":
-            browser.find_by_css(random.choice(self._inner_links).attributes["class"]).click()
+            for cl in random.choice(self._inner_links)['class']:
+                if browser.is_element_present_by_css(cl):
+                    browser.find_by_css(cl)[0].click()
         elif self._target == "OPEN":
-            tmp = self._inner_links + self._outer_links
-            browser.find_by_css(random.choice(tmp).attributes["class"]).click()
+            for cl in random.choice(self._inner_links)['class']:
+                if browser.is_element_present_by_css(cl):
+                    browser.find_by_css(cl)[0].click()
+            # browser.find_by_css(random.choice(self._inner_links + self._outer_links)['class'][-1])[0].click()
+
+    def place_in_vector(self, tag, tag_type):
+        if tag_type == "REVEAL":
+            self._section_reveals.append(tag)
+        elif tag_type == "INNER":
+            self._inner_links.append(tag)
+        elif tag_type == "OUTER":
+            self._outer_links.append(tag)
 
     def process_html(self, browser: Browser):
         """
@@ -166,14 +187,18 @@ class RTClassifier:
         element (which puts them in the right vector).
         Parameters
         ----------
-        browser : Browser
+        :param browser : Browser
             The Splinter Browser object which controls the browser which
             executes the called actions.
         """
 
-        elements = element.fromstring(browser.html)
-        for elem in elements:
-            self.classify(elem)
+        # elements = element.fromstring(browser.html)
+        soup = BeautifulSoup(browser.html, "lxml")
+
+        for tag in soup.find("body").descendants:
+            if not isinstance(tag, NavigableString):
+                if tag.has_attr('class'):
+                    self.place_in_vector(tag, self.classify(tag['class']))
 
     def run(self, browser_str):
         """
@@ -194,11 +219,11 @@ class RTClassifier:
         else:
             browser.visit(self._url)
             self.scroll_down(browser)
-            self.reveal_all(browser)
-            self.process_html(browser)
-            self.crawl(browser)
-            window = browser.windows[0]
-            window.close()
+            while True:
+                self.reveal_all(browser)
+                self.process_html(browser)
+            # self.crawl(browser)
+            # browser.quit()
 
 # import_learning_set("learningset.json")
 

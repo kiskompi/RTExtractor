@@ -1,4 +1,4 @@
-#Bevezetés:
+# Bevezetés:
 
 Az internet terjedésével egyre fontosabbá válik az a törekvés, hogy az ott fellelhető információ ne csak a felhasználók, hanem különböző szoftverek által is feldolgozható legyen. Ebből a célból jött létre a 2000-es évek elején a szemantikus web koncepciója, majd emiatt születtek meg a különböző tartalomkinyerési technológiák. A különböző célokra specializált tartalomkinyerő programok célja az, hogy a feladatuk szempontjából releváns információkat a lényegtelen információktól (ún. boilerplate) megtisztítva bányásszák ki a weboldalakból. Ilyen feladat lehet pl. a nyelvészeti célú felhasználás, illetve az információ kis méretű eszközökön jobban megjeleníthetővé tétele és a látássérültek számára készült képernyőolvasó programok által könnyebben feldolgozható formátumba történő alakítása.
 
@@ -7,15 +7,12 @@ A modern tartalomkinyerő rendszerek egyik legnagyobb kihívása, hogy képesek 
 Jelen dolgozat célja, hogy röviden bemutassa a dinamikusan generált weblapok működésének alapjait, ismertesse atartalomkinyerés kihívásait ezen a területeén, és végül prezentáljon egy lehetséges megoldást a probléma kezelésére. Ilyen módon szűkíthető lenne a tartalomgenerálás- és kinyerés között utóbbi évtizedben kialakult technológiai rés.
 
 
-#Részfeladatok:
+# Részfeladatok:
 
-- [ ] Elmenteni a felhasználó klikkelését, ami megmutatja, melyik link lenyomásával lehet az új adatot behozni. - Selenium WebIDE
-- [ ] Képes legyen ezt az inputot megváltoztatni. - Selenium WebIDE szkriptfájljainak kezelése
-- [ ] Az inputot (a DOM-elemet, ami aktiválja az adatlekérést) szerkeszthető formában tárolni. - Selenium WebIDE szkriptfájlja
-- [ ] Az outputot olvasható formában tárolni. - mi legyen az output?
-
-- [ ] Differencciálja a betöltött HTML-adatokat és csak a különbséget menti el, így csökkentve a redundnciát.
-- [ ] Monitorozza az oldalt, ajtomatikus változásokat keresve. Ha az addig láthatatlan, user által adott GET link megjelenik, rákattint (így nem kell az egész oldalt újratölteni).
+- [x] Elmenteni a felhasználó klikkelését, ami megmutatja, melyik link lenyomásával lehet az új adatot behozni. - LearnigSetApp
+- [ ] Képes legyen ezt az inputot megváltoztatni. - szabványos Json formátum használata az LSApp kimenetében.
+- [ ] Az outputot olvasható formában tárolni. - az osztályozott linkek és feature-eik
+- [ ] Monitorozza az oldalt, automatikus változásokat keresve. Ha az addig láthatatlan, user által adott GET link megjelenik, rákattint (így nem kell az egész oldalt újratölteni).
 - [ ] Gépi tanuló API, aminek segítségével az algoritmus felhasználói beavatkozás nélkül tanulhatja a weblap működését.
 
 # Működés:
@@ -77,7 +74,8 @@ Mindig működő kis modulokat kell létrehozni, azokat egyemnként tesztelni:
 ### SamePageHyperlink:
     * ugyanennek az oldalnak egy másik aloldalára mutató link
 
-## Speciális esetek, amikkel nem kel foglalkozni?
+## Speciális esetek
+Olyan esetek, amikkel nem, vagy máshogy kell foglalkozni. Azért kerültek be, mert lehet relevanciájuk, de nem feltétlen részei a dolgozathoz csatolt program problémahalmazának.
 ### PopUpSection
     - olyan, felhasználói interakciót igénylő oldalrész, ami blokkolja az oldal tartalmainak elérését. Kódszinten nem probléma, de a felhasználói interakció ami ezt kiiktatja értéktelen a crawlernek, ezért kiszűrendő. (interakció-boilerplate). lehet, hogy csak meg kéne mondani a felhasználóknak, hogy amikor ilyenre kattintsanak, addig állítsák le a felvételt, mert ronthatja a pontosságot/hatékonyságot/sebességet.
 ### ScrollDownLoader
@@ -87,28 +85,9 @@ Tehát: ismerje meg azokat a linkeket, melyek nem más URL-re irányítanak, han
 Ismerje fel azokat a lehetőségeket, melykor az oldal aljára görgetve új adatok töltődnek be. A felhasználói interakciókor a felugró div-ek még bezavarhatnak, de az automatizált crawling futásakor ez már nem szabad.
 
 ## Output:
-Egy XML-be vagy YAML-ba mentse ki az tanulás eredményét, hogy újrafelhasználható legyen, kb. így:
-```XML
-<SectionRevealButton>
-    <webpage url="www.twitter.com">
-        <group type = "SectionRevealButton">
-            <class>CLASSNAME1</class>
-            <class>CLASSNAME2</class> (azok a classnevek, amik indikálják a tanulás alapján, hogy ebbe a csoportba tartozik)
-            <class>CLASSNAME3</class>
-        </group>
-        <group type = "LanguageSelectionButton">
-            <class>CLASSNAME2</class> (azok a classnevek, amik indikálják a tanulás alapján, hogy ebbe a csoportba tartozik)
-        </group>
-        <group type = "ScrollDownLoader"></group> EZ ÜRES, A LÉTEZÉSE MÁR AZT JELENTI, HOGY HA LEGÖRGETEK, JÖN ÚJ ADAT
-    </webpage>
-    <webpage url="www.facebook.com">
-    </webpage>
-    <webpage url="www.euronews.com">
-    </webpage>
-    <webpage url="www.index.hu">
-    </webpage>
-</SectionRevealButton>
-```
+Egy Json fájlba menti ki az tanulás eredményét, hogy újrafelhasználható legyen, kb. így:
+
+
 ## Új link tíus hozzáadása
 
 Erre csak a forráskód módosításával van lehetőség. A következő részekre az element.py megfelelő kódsoraihoz új sorok beszúrásával lehet új típust felvenni:
@@ -158,40 +137,10 @@ Amit meg kell nézni: van-e bit.ly vagy goo.gl visszafejtő vagy valami hasonló
 1. Ember valami minta alapján generáltat valami utasítás listát, hogy ide kell kattintani. (Kvázi Első usecase 2.-pont csak itt az ember is automatizáltan csinálná a dolgokat)
 2. A program eszerint működik.
 
-##Továbbiak:
+##További lehetőségek:
 
 1. "Trollszűrő"
 2. youtube commentek
-3. euronews multiligual
+3. euronews-szerű nyelvválasztó linkek osztályozása
 4. kommentszekciók mutatása
 
-#Kinda docu:
-```python
-def get_user_action():
-    """This function captures the click of the user on the web page and stores it in a file."""
-```
-```python
-def change_user_action():
-    """This function changes the file by a new interaction, or manual rewriting.
-    Can call get_user_action()"""
-```
-```python
-def difference(old_page_source: list, new_page_source: list) -> str:
-    """This function differentiates the two strings given as parameters.
-```
-```python
-def get_refreshment(browser: splinter.Browser) -> list:
-    """This function issues a new HTTP request by clicking on the
-    "refresh" button saved by the get_refresh_button() function.
-```
-```python
-def get_refresh_button():
-    """This function saves the DOM elements of the page responsible
-    for getting the new data, marked manually by the
-    user. Calls get_user_action() or gets it from text input"""
-```
-```python
-def run_extraction(urladdr: str):
-    """The main function, containing the initial GET request, the
-    main loop and the output"""
-```

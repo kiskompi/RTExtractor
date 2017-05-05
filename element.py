@@ -46,7 +46,7 @@ class CrawlerClass(Enum):
             print("Exception caught: " + repr(ex))
 
 
-class Element:
+class CrawlElement:
     """
     A structure consisting of the HTML tag, HTML attributes and their values
     and the crawler class.
@@ -64,15 +64,11 @@ class Element:
             standard or the decision tree
     """
 
-    def __init__(self, url: str, code: str, crawler_class: CrawlerClass):
+    def __init__(self, url: str, name: str, attributes: dict, crawler_class: CrawlerClass):
         self._url = url
-        self._tag = self.extract_tag(code)
-        self._class = crawler_class
-        self._attributes = dict()
-
-        attrs = self.extract_attribute_list(code)
-        for attr in attrs:
-            self._attributes[self.extract_name(attr)] = self.extract_values(attr)
+        self._tag = name
+        self.crawl_class = crawler_class
+        self._attributes = attributes
 
     @classmethod
     def json2element(cls, json_element):

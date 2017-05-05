@@ -148,4 +148,45 @@ def run_extraction(urladdr: str):
         pass
 
 
-run_extraction("https://twitter.com/hashtag/notmysuperbowlchamps?f=tweets&vertical=default&src=tren")
+
+    class CrawlerClass(Enum):
+        """
+        This class is an enumeration representing the classes which are the output
+        of the decision tree.
+        """
+        REVEAL = 1
+        INNER = 2
+        OUTER = 3
+        UNDET = 0
+    
+        @classmethod
+        def str2cc(cls, par: str):
+            """
+            This function converts a string to a CrawlerClass enumeration value.
+            Parameters
+            ----------
+            par : str
+                The string which is hardcoded to the application. An unexpected
+                value results in an AttributeError.
+            Returns
+            -------
+            CrawlerClass
+                Returns a copy of the CrawlerClass class.
+            """
+            try:
+                if par == "SectionReveal":
+                    return cls.REVEAL
+                elif par == "OuterPageLink":
+                    return cls.OUTER
+                elif par == "InnerPageLink":
+                    return cls.INNER
+                elif par == "UNDET" or par == "":
+                    return cls.UNDET
+                else:
+                    raise AttributeError("Bad value for CrawlerClass!")
+            except AttributeError as ex:
+                print("Exception caught: " + repr(ex))
+    
+    
+    
+    run_extraction("https://twitter.com/hashtag/notmysuperbowlchamps?f=tweets&vertical=default&src=tren")
