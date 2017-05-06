@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b6c7d26c-50f8-4426-b8e7-bc2369cc7997" name="Default" comment="Már remélhetőleg majdnem működik, sajnos klikkelésnél most exceptiont dob, ezt próbálom megoldani. Egyszer már sikerült, de csak elfedte a problémát. Nem tud klikkelni nem látható elemekre.">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/RTExtractor_new.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/andris.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/andris.xml" />
+    <list default="true" id="b6c7d26c-50f8-4426-b8e7-bc2369cc7997" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/RTExtractor.py" afterPath="$PROJECT_DIR$/RTExtractor.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dectree.py" afterPath="$PROJECT_DIR$/dectree.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/results.txt" afterPath="$PROJECT_DIR$/results.txt" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -28,8 +25,8 @@
       <file leaf-file-name="RTExtractor.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/RTExtractor.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="576">
-              <caret line="151" column="28" lean-forward="false" selection-start-line="151" selection-start-column="28" selection-end-line="151" selection-end-column="28" />
+            <state relative-caret-position="160">
+              <caret line="204" column="14" lean-forward="false" selection-start-line="204" selection-start-column="14" selection-end-line="204" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -88,9 +85,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="960" />
     <option name="y" value="27" />
-    <option name="width" value="960" />
+    <option name="width" value="1920" />
     <option name="height" value="1053" />
   </component>
   <component name="ProjectView">
@@ -382,7 +378,14 @@
       <option name="project" value="LOCAL" />
       <updated>1494011498095</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Működik, néha megakad, azt még vizsgálom.">
+      <created>1494024915726</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1494024915726</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -395,19 +398,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="960" y="27" width="960" height="1053" extended-state="4" />
+    <frame x="0" y="27" width="1920" height="1053" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.240625" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1203125" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32997987" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3863179" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3863179" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3660629" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3993964" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3993964" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -447,7 +450,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Már remélhetőleg majdnem működik, sajnos klikkelésnél most exceptiont dob, ezt próbálom megoldani. Egyszer már sikerült, de csak elfedte a problémát. Nem tud klikkelni nem látható elemekre." />
-    <option name="LAST_COMMIT_MESSAGE" value="Már remélhetőleg majdnem működik, sajnos klikkelésnél most exceptiont dob, ezt próbálom megoldani. Egyszer már sikerült, de csak elfedte a problémát. Nem tud klikkelni nem látható elemekre." />
+    <MESSAGE value="Működik, néha megakad, azt még vizsgálom." />
+    <option name="LAST_COMMIT_MESSAGE" value="Működik, néha megakad, azt még vizsgálom." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -713,30 +717,6 @@
             <marker date="1494011253589" expanded="true" signature="4809:5130" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
             <marker date="1494011253589" expanded="true" signature="5308:5397" ph="..." />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dectree.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="577">
-          <caret line="38" column="53" lean-forward="true" selection-start-line="38" selection-start-column="53" selection-end-line="38" selection-end-column="53" />
-          <folding>
-            <marker date="1494012807065" expanded="true" signature="14:2016" ph="..." />
-            <marker date="1494012807065" expanded="true" signature="19:387" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-            <marker date="1494012807065" expanded="true" signature="411:424" ph="..." />
-            <marker date="1494012807065" expanded="true" signature="488:2016" ph="..." />
-            <marker date="1494012807065" expanded="true" signature="497:758" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
-            <marker date="1494012807065" expanded="true" signature="1563:2016" ph="..." />
-            <marker date="1494012807065" expanded="true" signature="1600:2016" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/results.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -1067,10 +1047,61 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/results.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.6/site-packages/selenium/webdriver/remote/errorhandler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="191" column="0" lean-forward="false" selection-start-line="191" selection-start-column="0" selection-end-line="191" selection-end-column="0" />
+          <folding>
+            <marker date="1488201054367" expanded="true" signature="0:786" ph="..." />
+            <marker date="1488201054367" expanded="false" signature="788:1821" ph="import ..." />
+            <marker date="1488201054367" expanded="true" signature="1922:3412" ph="..." />
+            <marker date="1488201054367" expanded="true" signature="1927:1994" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1488201054367" expanded="true" signature="3442:8877" ph="..." />
+            <marker date="1488201054367" expanded="true" signature="3447:3511" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1488201054367" expanded="true" signature="3551:8773" ph="..." />
+            <marker date="1488201054367" expanded="true" signature="3560:3832" ph="&quot;&quot;&quot;Checks that a JSON response from the WebDriver does not have an error....&quot;&quot;&quot;" />
+            <marker date="1488201054367" expanded="true" signature="4129:4981" ph="..." />
+            <marker date="1488201054367" expanded="true" signature="4248:4981" ph="..." />
+            <marker date="1488201054367" expanded="true" signature="4297:4921" ph="..." />
+            <marker date="1488201054367" expanded="true" signature="4441:4834" ph="..." />
+            <marker date="1488201054367" expanded="true" signature="4603:4834" ph="..." />
+            <marker date="1488201054367" expanded="true" signature="7291:7447" ph="..." />
+            <marker date="1488201054367" expanded="true" signature="7710:8428" ph="..." />
+            <marker date="1488201054367" expanded="true" signature="7755:8377" ph="..." />
+            <marker date="1488201054367" expanded="true" signature="7805:8377" ph="..." />
+            <marker date="1488201054367" expanded="true" signature="8826:8877" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dectree.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="26" column="97" lean-forward="true" selection-start-line="26" selection-start-column="97" selection-end-line="26" selection-end-column="97" />
+          <folding>
+            <marker date="1494012807065" expanded="true" signature="14:2016" ph="..." />
+            <marker date="1494012807065" expanded="true" signature="19:387" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1494012807065" expanded="true" signature="411:424" ph="..." />
+            <marker date="1494012807065" expanded="true" signature="488:2016" ph="..." />
+            <marker date="1494012807065" expanded="true" signature="497:758" ph="&quot;&quot;&quot;...&quot;&quot;&quot;" />
+            <marker date="1494012807065" expanded="true" signature="1563:2016" ph="..." />
+            <marker date="1494012807065" expanded="true" signature="1600:2016" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/RTExtractor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="576">
-          <caret line="151" column="28" lean-forward="false" selection-start-line="151" selection-start-column="28" selection-end-line="151" selection-end-column="28" />
+        <state relative-caret-position="160">
+          <caret line="204" column="14" lean-forward="false" selection-start-line="204" selection-start-column="14" selection-end-line="204" selection-end-column="14" />
           <folding />
         </state>
       </provider>

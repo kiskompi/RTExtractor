@@ -129,7 +129,7 @@ class RTClassifier:
             # splinter or selenium click on this type of elements
             css_attrs = "." + ".".join((revealer['class'])).replace(" ", ".")
             i = 0
-            while i < reveal_count:
+            while i < len(browser.find_by_css(css_attrs)):
                 try:
                     elem_ls = browser.find_by_css(css_attrs)
                     if len(elem_ls) <= i:
@@ -202,6 +202,7 @@ class RTClassifier:
     def place_in_vector(self, tag, tag_type):
         if tag_type == "REVEAL":
             self._section_reveals.append(tag)
+            # print(len(self._section_reveals))
         elif tag_type == "INNER":
             self._inner_links.append(tag)
         elif tag_type == "OUTER":
