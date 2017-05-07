@@ -24,6 +24,8 @@ linkjeit osztályokba rendezi:
 ugyanerre az URL-osztályra mutat (pl facebookról csak facebookra).
 """
 
+import splinter
+from selenium.webdriver.common.keys import Keys
 from splinter import Browser
 import random
 from bs4 import BeautifulSoup
@@ -59,6 +61,7 @@ class RTClassifier:
         self._outer_links = []
         self._inner_links = []
         self._clicked = []
+        self._closers = []
         self._url = url
         self._extractor = extractor
 
@@ -103,7 +106,16 @@ class RTClassifier:
 
         #   if dectree.DecTree().classify(html_classes) != "MISC":
         #       print(dectree.DecTree().classify("{} : classes {}".format(html_classes, html_classes)))
+
         return dectree.DecTree().classify(html_classes)
+
+    @classmethod
+    def find_by_css(cls, browser: Browser, css: str) -> list:
+        try:
+            retlist = browser.find_by_css(css)
+        except splinter.exceptions.ElementDoesNotExist:
+            print("Does not exist")
+        return retlist
 
     @classmethod
     def is_stale(cls, elem) -> bool:
@@ -124,32 +136,85 @@ class RTClassifier:
         :param reveal_count : int
             Maximises the number of the revealed links
         """
-        print("REVEAL ALL")
-        for revealer in self._section_reveals:
+        print("REVEAL ALL ", len(self._section_reveals))
+        if reveal_count > len(self._section_reveals):
+            reveal_count = len(self._section_reveals)
+
+        browser.driver.find_element_by_tag_name("body").send_keys(Keys.ESCAPE)
+
+        for i in range(0, reveal_count):
             # splinter or selenium click on this type of elements
-            css_attrs = "." + ".".join((revealer['class'])).replace(" ", ".")
-            i = 0
-            while i < len(browser.find_by_css(css_attrs)):
+            print(i)
+
+            revealer = self._section_reveals[i]
+            revealer_css = "." + ".".join((revealer['class'])).replace(" ", ".")
+            # print(revealer_css)
+
+            j = 0
+            print("Section revealers: ", len(self._section_reveals))
+            revealer_css = revealer_css[:-1]
+            reveal_ls = browser.driver.find_elements_by_css_selector(revealer_css)
+            clicked = 0
+            print("SR found: ", len(reveal_ls))
+
+            while j < len(reveal_ls):
                 try:
-                    elem_ls = browser.find_by_css(css_attrs)
-                    if len(elem_ls) <= i:
-                        continue
-                    else:
-                        if not self.is_stale(elem_ls[i]) and elem_ls[i] not in self._clicked:
-                            print("Elem visible: {} - {}".format(elem_ls[i], elem_ls[i].visible))
-                            inv = False
-                            while not inv:
-                                # it has to be here redundantly because slow JS can hide the elements
-                                # before clicking but after last check
-                                if elem_ls[i].visible:
-                                    elem_ls[i].click()
-                                    self._clicked.append(elem_ls[i])
-                                    print("Element clicked")
-                                inv = True
-                    i += 1
+                    if reveal_ls[j].is_enabled():
+                        # not self.is_stale(reveal_ls[j]): # and reveal_ls[j] not in self._clicked:
+                        print("Elem visible: {} - {}".format(reveal_ls[j], reveal_ls[j].is_enabled()))
+                        # reveal_ls[j].send_keys(Keys.RETURN)
+                        clss = reveal_ls[j].get_attribute("class")
+                        # "tweet js-stream-tweet js-actionable-tweet js-profile-popup-actionable
+                        # dismissible-content original-tweet js-original-tweet has-cards  has-content"
+
+                        script_fh = "document.getElementsByClassName('"
+                        script_sh = "')[" + str(j) + "].click()"
+                        script = script_fh + clss + script_sh
+                        script = ''.join([line.strip("\n") for line in script])
+
+                        print(script)
+                        browser.execute_script(script)
+                        clicked += 1
+                        self._clicked.append(reveal_ls[j])
+                        print("Element clicked")
+                        print(len(self._closers))
+
+                        print("Section closers: ", len(self._closers))
+                        if i != 0:
+                            closer = self._closers[i % len(self._closers)]
+                        else:
+                            closer = self._closers[0]
+
+                        closer_css = "." + ".".join((closer['class'])).replace(" ", ".")
+
+                        script_fh = "document.getElementsByClassName('"
+                        script_sh = "')[" + str(j) + "].click()"
+                        script = script_fh + closer_css + script_sh
+                        script = ''.join([line.strip("\n") for line in script])
+                        print(script)
+                        # browser.execute_script(script)
+
+                        k = 0
+
+                        closer_ls = browser.driver.find_elements_by_css_selector(closer_css)
+                        for closer in closer_ls:
+                            try:
+                                if closer.is_enabled() and closer.is_displayed():
+                                    # not self.is_stale(reveal_ls[j]): # and reveal_ls[j] not in self._clicked:
+                                    print("Closer visible: {} - {}".format(closer, closer.is_enabled()))
+                                    closer.click()
+                                    print("Closer clicked")
+                            except StaleElementReferenceException:
+                                print("StaleElementReference")
+                                continue
+
+                    j += 1
                 except StaleElementReferenceException:
                     print("StaleElementReference")
                     continue
+                if clicked >= reveal_count:
+                    break
+
 
     @classmethod
     def scroll_down(cls, browser: Browser, scrollnum: int):
@@ -201,12 +266,17 @@ class RTClassifier:
 
     def place_in_vector(self, tag, tag_type):
         if tag_type == "REVEAL":
+            # print("reveal: ", tag["class"])
             self._section_reveals.append(tag)
-            # print(len(self._section_reveals))
         elif tag_type == "INNER":
+            # print("inner", tag["class"])
             self._inner_links.append(tag)
         elif tag_type == "OUTER":
+            # print("outer", tag["class"])
             self._outer_links.append(tag)
+        elif tag_type == "CLOSE":
+            # print("closer", tag["class"])
+            self._closers.append(tag)
 
     def process_html(self, browser: Browser):
         """
@@ -223,8 +293,7 @@ class RTClassifier:
         soup = BeautifulSoup(browser.html, "lxml")
 
         for tag in soup.find("body").descendants:
-            if not isinstance(tag, NavigableString):
-                if tag.has_attr('class'):
+            if not isinstance(tag, NavigableString) and tag.has_attr('class'):
                     self.place_in_vector(tag, self.classify(tag['class']))
 
     @classmethod
@@ -266,7 +335,6 @@ class RTClassifier:
             else:
                 self.reveal_all(browser, reveal)
                 self.print_paragraphs(self._extractor(browser.html, extr_param))
-                self.process_html(browser)
             # self.crawl(browser)
             print("Finished, quitting!")
             browser.quit()
