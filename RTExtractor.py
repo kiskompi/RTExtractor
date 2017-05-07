@@ -111,6 +111,12 @@ class RTClassifier:
 
     @classmethod
     def find_by_css(cls, browser: Browser, css: str) -> list:
+        """
+        This function looks for a set of HTML elements based on their CSS classes.
+        :param browser: The Splinter browser instance in which the page is opened.
+        :param css: The css query to find the elements.
+        :return: The list of the elements.
+        """
         try:
             retlist = browser.find_by_css(css)
         except splinter.exceptions.ElementDoesNotExist:
@@ -119,6 +125,11 @@ class RTClassifier:
 
     @classmethod
     def is_stale(cls, elem) -> bool:
+        """
+        Checks whether the element is enabled (connected to the DOM and clickable) or not.
+        :param elem: the element to check
+        :return: True if clickable, False if not
+        """
         try:
             # elem.click()
             print(elem.is_enabled())
@@ -127,10 +138,15 @@ class RTClassifier:
             print("False")
             return False
 
-    def click_on(self, revealer_act) -> bool:
+    def click_on(self, elem) -> bool:
+        """
+        Clicks on the element and returns whether the click was successful or not.
+        :param elem: The element to click on
+        :return: True if successful, False if not
+        """
         try:
-            if revealer_act not in self._clicked and revealer_act.is_displayed():
-                revealer_act.click()
+            if elem not in self._clicked and elem.is_displayed():
+                elem.click()
                 return True
         except StaleElementReferenceException:
             print("StaleElementReference")
@@ -138,6 +154,12 @@ class RTClassifier:
 
     @classmethod
     def js_click_on(cls, elem, browser: Browser) -> bool:
+        """
+        Clicks on the element via executing a Javascript query and returns whether the click was successful or not.
+        :param elem: The element to click on
+        :param browser: The Splinter Browser instance which will execute the query
+        :return: True if successful, False if not
+        """
         clss = elem.get_attribute("class")
 
         script_fh = "document.getElementsByClassName('"
@@ -337,11 +359,9 @@ class RTClassifier:
             else:
                 self.reveal_all(browser, reveal)
                 self.print_paragraphs(self._extractor(browser.html, extr_param))
-            # self.crawl(browser)
+            self.crawl(browser)
             print("Finished, quitting!")
             browser.quit()
-
-# import_learning_set("learningset.json")
 
 CLSSFR = RTClassifier("CLOSED",
                       'https://twitter.com/search?data_id=tweet%3A842698283604557824&f=tweets&vertical=default&q'
