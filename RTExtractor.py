@@ -120,10 +120,33 @@ class RTClassifier:
     @classmethod
     def is_stale(cls, elem) -> bool:
         try:
-            elem.click()
-            return False
-        except (StaleElementReferenceException, ElementNotVisibleException):
+            # elem.click()
+            print(elem.is_enabled())
             return True
+        except (StaleElementReferenceException, ElementNotVisibleException):
+            print("False")
+            return False
+
+    def click_on(self, revealer_act) -> bool:
+        try:
+            if revealer_act not in self._clicked and revealer_act.is_displayed():
+                revealer_act.click()
+                return True
+        except StaleElementReferenceException:
+            print("StaleElementReference")
+            return False
+
+    @classmethod
+    def js_click_on(cls, elem, browser: Browser) -> bool:
+        clss = elem.get_attribute("class")
+
+        script_fh = "document.getElementsByClassName('"
+        script_sh = "')[" + str(j) + "].click()"
+        script = script_fh + clss + script_sh
+        script = ''.join([line.strip("\n") for line in script])
+
+        print(script)
+        browser.execute_script(script)
 
     def reveal_all(self, browser: Browser, reveal_count: int):
         """
@@ -142,79 +165,58 @@ class RTClassifier:
 
         browser.driver.find_element_by_tag_name("body").send_keys(Keys.ESCAPE)
 
-        for i in range(0, reveal_count):
+        for revealer in self._section_reveals:
             # splinter or selenium click on this type of elements
-            print(i)
-
-            revealer = self._section_reveals[i]
             revealer_css = "." + ".".join((revealer['class'])).replace(" ", ".")
             # print(revealer_css)
 
-            j = 0
-            print("Section revealers: ", len(self._section_reveals))
             revealer_css = revealer_css[:-1]
             reveal_ls = browser.driver.find_elements_by_css_selector(revealer_css)
             clicked = 0
+            print("Section revealers: ", len(self._section_reveals))
             print("SR found: ", len(reveal_ls))
 
-            while j < len(reveal_ls):
-                try:
-                    if reveal_ls[j].is_enabled():
-                        # not self.is_stale(reveal_ls[j]): # and reveal_ls[j] not in self._clicked:
-                        print("Elem visible: {} - {}".format(reveal_ls[j], reveal_ls[j].is_enabled()))
-                        # reveal_ls[j].send_keys(Keys.RETURN)
-                        clss = reveal_ls[j].get_attribute("class")
-                        # "tweet js-stream-tweet js-actionable-tweet js-profile-popup-actionable
-                        # dismissible-content original-tweet js-original-tweet has-cards  has-content"
+            # this function iterates through the elements found by css class
+            for revealer_act in reveal_ls:
+                    if self.is_stale(revealer_act):
+                        # self.js_click_on(revealer_act)
 
-                        script_fh = "document.getElementsByClassName('"
-                        script_sh = "')[" + str(j) + "].click()"
-                        script = script_fh + clss + script_sh
-                        script = ''.join([line.strip("\n") for line in script])
-
-                        print(script)
-                        browser.execute_script(script)
-                        clicked += 1
-                        self._clicked.append(reveal_ls[j])
-                        print("Element clicked")
-                        print(len(self._closers))
-
-                        print("Section closers: ", len(self._closers))
-                        if i != 0:
-                            closer = self._closers[i % len(self._closers)]
-                        else:
-                            closer = self._closers[0]
-
-                        closer_css = "." + ".".join((closer['class'])).replace(" ", ".")
-
-                        script_fh = "document.getElementsByClassName('"
-                        script_sh = "')[" + str(j) + "].click()"
-                        script = script_fh + closer_css + script_sh
-                        script = ''.join([line.strip("\n") for line in script])
-                        print(script)
-                        # browser.execute_script(script)
-
-                        k = 0
-
-                        closer_ls = browser.driver.find_elements_by_css_selector(closer_css)
-                        for closer in closer_ls:
-                            try:
-                                if closer.is_enabled() and closer.is_displayed():
-                                    # not self.is_stale(reveal_ls[j]): # and reveal_ls[j] not in self._clicked:
-                                    print("Closer visible: {} - {}".format(closer, closer.is_enabled()))
-                                    closer.click()
-                                    print("Closer clicked")
-                            except StaleElementReferenceException:
-                                print("StaleElementReference")
+                        if self.click_on(revealer_act):
+                            clicked += 1
+                            self._clicked.append(revealer_act)
+                            print("Element clicked")
+                            print("Clicked so far: ", clicked)
+                            if clicked >= reveal_count:
+                                print("Limit reached, reveal stopped")
+                                return
+                            else:
                                 continue
 
-                    j += 1
-                except StaleElementReferenceException:
-                    print("StaleElementReference")
-                    continue
-                if clicked >= reveal_count:
-                    break
+                        # extr = "return $('" + revealer_css + " *:not(:has(\"*\"))')[0];"
+                        # extr = ''.join([line.strip("\n") for line in extr])
+                        # print(extr)
+                        # text = browser.execute_script(extr)
 
+                        # print(text)
+
+                        # print("Section closers: ", len(self._closers))
+
+                        # script_fh = "document.getElementsByClassName('"
+                        # script_sh = "')[" + str(j) + "].click()"
+                        # script = script_fh + closer_css + script_sh
+                        # script = ''.join([line.strip("\n") for line in script])
+                        # print(script)
+                        # browser.execute_script(script)
+
+                        for k in self._closers:
+                            closer_css = "." + ".".join((k['class'])).replace(" ", ".")
+                            closer_ls = browser.driver.find_elements_by_css_selector(closer_css)
+
+                            for closer in closer_ls:
+                                if self.click_on(closer):
+                                    print("Closer clicked")
+                                else:
+                                    continue
 
     @classmethod
     def scroll_down(cls, browser: Browser, scrollnum: int):
