@@ -66,7 +66,44 @@ Erre csak a forráskód módosításával van lehetőség. A következő részek
 44            raise AttributeError("Bad value for CrawlerClass!")
 45        # Ide az új típus és az annak megfelelő str ellenőrzésének beszúrása
 ```
+```python
+def place_in_vector(self, tag, tag_type):
+    if tag_type == "REVEAL":
+        # print("reveal: ", tag["class"])
+        self._section_reveals.append(tag)
+    elif tag_type == "INNER":
+        # print("inner", tag["class"])
+        self._inner_links.append(tag)
+    elif tag_type == "OUTER":
+        # print("outer", tag["class"])
+        self._outer_links.append(tag)
+    elif tag_type == "CLOSE":
+        # print("closer", tag["class"])
+        self._closers.append(tag)
+    # Ide be kell szúrni a megfelelő feltételt
+```
 
+# Saját tartalomkinyerő algoritmus használata
+```python
+CLSSFR = RTClassifier("CLOSED",
+                      'https://twitter.com/search?data_id=tweet%3A842698283604557824&f=tweets&vertical=default&q'
+                      '=Trump&src=tren',
+                      # itt kell megadni a használni kívánt tartalomkinyerő függvényt
+                      justext.justext)
+# specifikálini kell az esetleges paramétereit
+param = justext.get_stoplist("English")
+# a konstruktor utolsó paramétere az előbb meghatározott paraméter
+CLSSFR.run("firefox", scroll=5, reveal=10, repeat=False, extr_param=param)
+```
+```python
+@classmethod
+def print_paragraphs(cls, paragraphs):
+# ezt a függvényt a tartalomkinyerő API-jának megfelelően kell implementálni
+    depend = open("results.txt", "a")
+    for paragraph in paragraphs:
+        if not paragraph.is_boilerplate:
+            print("PARAGRAPH\n============\n"+paragraph.text, end="", file=depend)
+```
 # Implementációs fázisok
 ##Példa Usecase:
 1. Gép valami gépitanulással eldönti, hogy mit kell kattintani és mit nem.
@@ -86,5 +123,4 @@ Erre csak a forráskód módosításával van lehetőség. A következő részek
 1. "Trollszűrő"
 2. youtube commentek
 3. euronews-szerű nyelvválasztó linkek osztályozása
-4. kommentszekciók mutatása
 

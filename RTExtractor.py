@@ -1,28 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-1. Tanulóhalmaz létrehozása:
-    1.A Gold Standard alapján csoportosítja a linkeket. Ebből megtanulja az osztályozás
-    szabályait, hogy aztán interakció nélkül tudja kezelni a többi letöltött oldalt.
-        * elég egyelőre az Inspect tool a böngészőben, és kézzel megcsinálni a fájlt?
-        * Inspect tool-> copy element -> bemásolni egy saját programba,
-        ami összeállítja a fájlt 2 adat alapján:
-            1. element forráskód
-            2. user által megadott osztály
-    2. lehet hardcoded néhány feature (pl. URL domain része), azok alapján továbbtanulni
-2. A felhasználói interakció alapján megtanult csoportosítással a bejárt oldal
-linkjeit osztályokba rendezi:
-    * SectionRevealButton,
-    * OuterPageHyperlink,
-    * SamePageHyperlink
-3. SectionReveaLButton osztályú linkjeit vektorokba rakja, majd sorban meghívja őket.
-4. Amikor a SectionReveal linkek elfogytak, az oldal aljára görget.
-    * Ha nem töltődik be új tartalom: 3-as ponthoz.
-    * Ha betöltődik, akkor újra vektorba rendezi a inkeket, de csak azokat a SectionReveaLButton
-    típusúakat járja be, amik az előző vektorban nem voltak benne. Ezután vissza a 2-es ponthoz
-    (újra legörget). X (kb. 5) legörgetés után abbahagyja, mert túl nagy lenne a memóriaigény.
-5.  Miután a legörgetést abbahagyhja, rámegy egy TraditionalHyperlinkButton típusú linkre, ami
-ugyanerre az URL-osztályra mutat (pl facebookról csak facebookra).
+A program egy betanított döntési fa segítségével osztályozza egy megadott oldal elemeit.
+Az osztályozás alapján bejárja azokat a linkeket, melyek az oldalon új adatokat jelenítenek
+meg, valamint megpróbál az oldal aljára görgetéssel új adatot előhozni. A megadott számú,
+vagy összes talált ilyen "Revealer" link bejárása után egy paraméter alapján az oldalon
+talált, ugyanerre vagy más weblapra mutató linkek valamelyikén folytatja a kinyerést.
 """
+import timeit
 
 import splinter
 from selenium.webdriver.common.keys import Keys
@@ -46,7 +30,7 @@ class RTClassifier:
     Fields
     ------
     _section_reveals : list
-        The list of links with the crawlerClass type: crawlerClass.REVEAL 
+        The list of links with the crawlerClass type: crawlerClass.REVEAL
     _outer_links : list
         The list of links with the crawlerClass type: crawlerClass.OUTER
     _inner_links : list
@@ -55,8 +39,11 @@ class RTClassifier:
         The URL of the homepage of the crawling. If the RTClassifier has
         the _target: CLOSED it will not click on links with other than this
         URL.
+    _extractor
+    _extract_time
+
     """
-    def __init__(self, crawl_target: str, url: str, extractor):
+    def __init__(self, crawl_target: str, extract_contly: bool, url: str, extractor):
         self._section_reveals = []
         self._outer_links = []
         self._inner_links = []
@@ -64,6 +51,7 @@ class RTClassifier:
         self._closers = []
         self._url = url
         self._extractor = extractor
+        self._extract_contly = extract_contly
 
         try:
             if crawl_target == "CLOSED" or crawl_target == "OPEN":
@@ -118,10 +106,9 @@ class RTClassifier:
         :return: The list of the elements.
         """
         try:
-            retlist = browser.find_by_css(css)
+            return browser.find_by_css(css)
         except splinter.exceptions.ElementDoesNotExist:
             print("Does not exist")
-        return retlist
 
     @classmethod
     def is_stale(cls, elem) -> bool:
@@ -132,10 +119,9 @@ class RTClassifier:
         """
         try:
             # elem.click()
-            print(elem.is_enabled())
+            elem.is_enabled()
             return True
         except (StaleElementReferenceException, ElementNotVisibleException):
-            print("False")
             return False
 
     def click_on(self, elem) -> bool:
@@ -148,8 +134,8 @@ class RTClassifier:
             if elem not in self._clicked and elem.is_displayed():
                 elem.click()
                 return True
-        except StaleElementReferenceException:
-            print("StaleElementReference")
+        except StaleElementReferenceException or ElementNotVisibleException:
+            print("ElementInaccessible")
             return False
 
     @classmethod
@@ -160,17 +146,21 @@ class RTClassifier:
         :param browser: The Splinter Browser instance which will execute the query
         :return: True if successful, False if not
         """
-        clss = elem.get_attribute("class")
+        try:
+            clss = elem.get_attribute("class")
 
-        script_fh = "document.getElementsByClassName('"
-        script_sh = "')[" + str(j) + "].click()"
-        script = script_fh + clss + script_sh
-        script = ''.join([line.strip("\n") for line in script])
+            script_fh = "document.getElementsByClassName('"
+            script_sh = "')[" + elem.get_attribute("class") + "].click()"
+            script = script_fh + clss + script_sh
+            script = ''.join([line.strip("\n") for line in script])
 
-        print(script)
-        browser.execute_script(script)
+            print(script)
+            browser.execute_script(script)
+            return True
+        except StaleElementReferenceException:
+            return False
 
-    def reveal_all(self, browser: Browser, reveal_count: int):
+    def reveal_all(self, browser: Browser, reveal_count: int, extr_param=None):
         """
         Clicks on all of the links in the _section_reveals vector.
         Parameters
@@ -180,6 +170,7 @@ class RTClassifier:
             executes the called actions.
         :param reveal_count : int
             Maximises the number of the revealed links
+        :param extr_param necessary parameters for the extractor, if needed
         """
         print("REVEAL ALL ", len(self._section_reveals))
         if reveal_count > len(self._section_reveals):
@@ -229,6 +220,10 @@ class RTClassifier:
                         # script = ''.join([line.strip("\n") for line in script])
                         # print(script)
                         # browser.execute_script(script)
+
+                        if self._extract_contly:
+                            self.print_paragraphs(self._extractor(browser.html, extr_param))
+                            print("Extracting done")
 
                         for k in self._closers:
                             closer_css = "." + ".".join((k['class'])).replace(" ", ".")
@@ -288,19 +283,24 @@ class RTClassifier:
                     browser.find_by_css(cl)[0].click()
             # browser.find_by_css(random.choice(self._inner_links + self._outer_links)['class'][-1])[0].click()
 
-    def place_in_vector(self, tag, tag_type):
-        if tag_type == "REVEAL":
+    def place_in_vector(self, elem, elem_type):
+        """
+        Places the received element in one of the class vectors based on the type of these elements.
+        :param elem: the HTML element which will be placed in these vectors
+        :param elem_type: the type of the HTML element, the result of the classification
+        """
+        if elem_type == "REVEAL":
             # print("reveal: ", tag["class"])
-            self._section_reveals.append(tag)
-        elif tag_type == "INNER":
+            self._section_reveals.append(elem)
+        elif elem_type == "INNER":
             # print("inner", tag["class"])
-            self._inner_links.append(tag)
-        elif tag_type == "OUTER":
+            self._inner_links.append(elem)
+        elif elem_type == "OUTER":
             # print("outer", tag["class"])
-            self._outer_links.append(tag)
-        elif tag_type == "CLOSE":
+            self._outer_links.append(elem)
+        elif elem_type == "CLOSE":
             # print("closer", tag["class"])
-            self._closers.append(tag)
+            self._closers.append(elem)
 
     def process_html(self, browser: Browser):
         """
@@ -322,10 +322,14 @@ class RTClassifier:
 
     @classmethod
     def print_paragraphs(cls, paragraphs):
+        """
+        This function handles the result of the data extractor algorithm.
+        :param paragraphs: The result of the extraction
+        """
         depend = open("results.txt", "a")
         for paragraph in paragraphs:
-            if not paragraph.is_boilerplate:
-                print("PARAGRAPH\n============\n"+paragraph.text, end="", file=depend)
+           if not paragraph.is_boilerplate:
+               print("PARAGRAPH\n============\n"+paragraph.text, end="", file=depend)
 
     def run(self, browser_str, scroll: int = -1, reveal: int = -1, repeat: bool = True, extr_param=None):
         """
@@ -353,19 +357,40 @@ class RTClassifier:
             self.process_html(browser)
             if repeat:
                 while True:
-                    self.reveal_all(browser, reveal)
+                    self.reveal_all(browser, reveal, extr_param)
                     self.print_paragraphs(self._extractor(browser.html, extr_param))
                     self.process_html(browser)
             else:
-                self.reveal_all(browser, reveal)
+                self.reveal_all(browser, reveal, extr_param)
                 self.print_paragraphs(self._extractor(browser.html, extr_param))
             self.crawl(browser)
             print("Finished, quitting!")
             browser.quit()
 
-CLSSFR = RTClassifier("CLOSED",
-                      'https://twitter.com/search?data_id=tweet%3A842698283604557824&f=tweets&vertical=default&q'
-                      '=Trump&src=tren',
-                      justext.justext)
-param = justext.get_stoplist("English")
-CLSSFR.run("firefox", scroll=5, reveal=10, repeat=False, extr_param=param)
+
+def nofunc(param1, param2):
+    """
+    The only function of this method is to be a placeholder for testing the framework without data extractors.
+    :param param1: placeholder parameter
+    :param param2: placeholder parameter
+    :return:
+    """
+    pass
+
+
+def execute():
+    """
+    It has to exist to make the time measurement possible via timeit
+    :return:
+    """
+    CLSSFR = RTClassifier("CLOSED",
+                          True,
+                          'https://twitter.com/search?data_id=tweet%3A842698283604557824&f=tweets&vertical=default&q'
+                          '=Trump&src=tren',
+                          justext.justext)
+    CLSSFR.run("firefox", scroll=5, reveal=10, repeat=False)
+
+# Time measurement
+# print(timeit.timeit("execute()", "from __main__ import execute", number=10))
+
+execute()
